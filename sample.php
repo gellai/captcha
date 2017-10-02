@@ -1,4 +1,4 @@
-<?php include 'classes/GellaiCaptcha.php'; ?>
+<?php include 'GellaiCaptcha.php'; ?>
 
 <!DOCTYPE html>
     <header></header>
