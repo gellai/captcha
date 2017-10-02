@@ -1,2 +1,4 @@
 # captcha
-PHP Captcha
+Simple PHP Captcha
+# Parameters
+mode = raw/b64
