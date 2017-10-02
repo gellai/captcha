@@ -8,12 +8,12 @@ Simple PHP Captcha
 <b>bColor</b>: <i>Background colour in hex format without #.</i><br>
 <b>lColor</b>: <i>Line colour in hex format without #.</i><br>
 # Usage
-<p><u>1. Raw Mode</u><br>
+<p><b>1. Raw Mode</b><br>
   <br>
   Just insert the PHP file as the image source: 'src=GellaiCaptcha.php?mode=raw' <i>('?mode=raw' is required)</i>.<br>
   <br>
   To pass any parameters use '?mode=raw&length=8lColor=646464' after the file name.</p>
-<p><u>2. Base 64 Mode</u><br>
+<p><b>2. Base 64 Mode</b><br>
   <br>
   Include the class file and echo out the following '$gCaptcha->getCaptcha($param)'.<br>
   <br>
