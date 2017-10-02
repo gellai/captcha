@@ -10,7 +10,7 @@ Simple PHP Captcha
 # Usage
 <p><u>1. Raw Mode</u><br>
   <br>
-  Just insert the PHP file as the image source: 'src=GellaiCaptcha.php?mode=raw'.<br>
+  Just insert the PHP file as the image source: 'src=GellaiCaptcha.php?mode=raw' <i>('?mode=raw' is required)</i>.<br>
   <br>
   To pass any parameters use '?mode=raw&length=8lColor=646464' after the file name.</p>
 <p><u>2. Base 64 Mode</u><br>
