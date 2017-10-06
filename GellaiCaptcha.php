@@ -71,6 +71,8 @@ class gCaptcha {
     }
     
     public function __construct() {
+        unset($_SESSION['gCaptcha']);
+        
         $this->_setMode();
         
         if($this->_mode == "raw") {
