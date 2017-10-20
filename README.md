@@ -71,3 +71,10 @@ The parameters are passed to the function in the form of an array.
 
 The mode property is not required to be set here.
 
+## To Do
+
+Add refresh button to renew the captcha image and reset the session without reloading the page.
+
+- Using Javascript/AJAX
+- Only works in Base 64 Mode
+- Maybe refresh button is drawn with PHP?
