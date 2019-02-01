@@ -43,8 +43,66 @@ if ($phpVersion > 5.4) {
     }
 }
 
-class GellaiCaptcha {
+<?php
+/**
+ * Parameters:
+ *      mode=raw            // Mode (see usage below)
+ *      length=6            // Length of random number
+ *      type=png            // Rendering image type
+ *      tColor=F0F0F0       // Text colour
+ *      bColor=646464       // Background colour
+ *      lColor=F0F0F0       // Line colour
+ * 
+ * Usage:
+ *      1. Raw mode
+ * 
+ *      <img src=classes/GellaiCaptcha.php?mode=raw&length=10&type=jpeg />
+ * 
+ *      2. Base 64 mode
+ * 
+ *      <?php
+ *          include_onec('classes/GellaiCaptcha.php');
+ * 
+ *          $param = array(
+ *						'mode'	 => "b64",
+ *						'length' => 5,
+ *						'type'	 => "gif",
+ *						'tColor' => "646464",
+ *						'bColor' => "F0F0F0",
+ *						'lColor' => "949494" );
+ *		?>
+ *          
+ *		<?php 
+ *			echo $gCaptcha->getCaptcha($param); 
+ *		?>
+ *
+ */
 
+
+/**
+ * Get the first 3 digits of the current PHP Version
+ */
+$phpVersion = substr(phpversion(), 0, 3);
+
+/**
+ * Check PHP Version and check if the session is already started.
+ */
+if ($phpVersion > 5.4) {
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+} 
+else {
+    if (session_id() == '') {
+        session_start();
+    }
+}
+
+/**
+ * Main class
+ */
+class GellaiCaptcha 
+{
     const DEF_IMAGE_TYPE = "png";
     const DEF_TXT_COLOR  = "646464";
     const DEF_BG_COLOR   = "F0F0F0";
@@ -70,6 +128,9 @@ class GellaiCaptcha {
         exit;
     }
     
+	/**
+	 * Constructor is mainly used for RAW mode
+	 */
     public function __construct() {
         unset($_SESSION['gCaptcha']);
 
@@ -91,7 +152,7 @@ class GellaiCaptcha {
      * @return type
      */
     public function getCaptcha($param = array()) {
-		$this->_param = $param;
+        $this->_param = $param;
         $this->_setMode();
         
         if($this->_mode == "b64") {            
@@ -107,7 +168,7 @@ class GellaiCaptcha {
     
     /**
      * Create HTML captcha image tag
-     * @return string
+     * @return type
      */
     private function _getCaptchaB64() {
         $this->_createImgResource()
@@ -163,7 +224,7 @@ class GellaiCaptcha {
     }
     
     /**
-     * Set image type from 'type'
+     * Set image type from 'type' parameter
      * @return $this
      */
     private function _setImgType() {
@@ -180,7 +241,7 @@ class GellaiCaptcha {
     }
     
     /**
-     * Set the random number length
+     * Set the random number length 
      * @return $this
      */
     private function _setRandNumber() {
@@ -203,27 +264,26 @@ class GellaiCaptcha {
             $this->_length    = $length;
             $this->_randNumber = rand( (int)$min, (int)$max );
         }
-        
+
         $_SESSION['gCaptcha'] = $this->_randNumber;
 
         return $this;
     }
-    
+
 	/**
-	 *
 	 * Get parameters from $_GET
 	 */
-	private function _getParam() {
-		$this->_param['mode'] = isset($_GET['mode']) ? $_GET['mode'] : "";
-		$this->_param['length'] = isset($_GET['length']) ? $_GET['length'] : "";
-		$this->_param['type'] = isset($_GET['type']) ? $_GET['type'] : "";
-		$this->_param['tColor'] = isset($_GET['tColor']) ? $_GET['tColor'] : "";
-		$this->_param['bColor'] = isset($_GET['bColor']) ? $_GET['bColor'] : "";
-		$this->_param['lColor'] = isset($_GET['lColor']) ? $_GET['lColor'] : "";
-	} 
-	
+    private function _getParam() {
+        $this->_param['mode'] = isset($_GET['mode']) ? $_GET['mode'] : "";
+        $this->_param['length'] = isset($_GET['length']) ? $_GET['length'] : "";
+        $this->_param['type'] = isset($_GET['type']) ? $_GET['type'] : "";
+        $this->_param['tColor'] = isset($_GET['tColor']) ? $_GET['tColor'] : "";
+        $this->_param['bColor'] = isset($_GET['bColor']) ? $_GET['bColor'] : "";
+        $this->_param['lColor'] = isset($_GET['lColor']) ? $_GET['lColor'] : "";
+    } 
+
     /**
-     * Set mode
+     * Set mode RAW / BASE64
      */
     private function _setMode() {
         $mode = $this->_getInput('mode');
@@ -235,9 +295,9 @@ class GellaiCaptcha {
             $this->_mode = self::DEF_MODE;
         }
     }
-    
+
     /**
-     * Set text colour from 'tColor
+     * Set text colour from 'tColor' parameter
      * @return $this
      */
     private function _setTxtColor() {
@@ -254,11 +314,10 @@ class GellaiCaptcha {
     }
       
     /**
-     * Set text colour from 'tColor
+     * Set background colour from 'bColor' parameter
      * @return $this
      */
-    private function _setBgColor() {
-        
+    private function _setBgColor() {       
         $bColor = $this->_getInput('bColor');
         
         if(strlen($bColor) == 3 || strlen($bColor) == 6) {
@@ -270,9 +329,12 @@ class GellaiCaptcha {
         
         return $this;
     }
-    
-    private function _setLnColor() {
-        
+	
+    /**
+     * Set line colour from 'lColor' parameter
+     * @return $this
+     */
+    private function _setLnColor() {      
         $lColor = $this->_getInput('lColor');
         
         if(strlen($lColor) == 3 || strlen($lColor) == 6) {
@@ -284,13 +346,12 @@ class GellaiCaptcha {
         
         return $this;
     }
-    
+
     /**
      * Set image resource (width, height)
      * @return $this
      */
-    private function _createImgResource() {
-        
+    private function _createImgResource() {      
         $this->_width = ($this->_length * 9) + (2 * 6);
         $this->_imgInst = imagecreatetruecolor($this->_width, $this->_height);
         return $this;
@@ -420,7 +481,7 @@ class GellaiCaptcha {
     }
     
     /**
-     * Create image
+     * Create the captcha image
      */
     private function _createCaptchaImage() {
         $this->_createImgResource()
