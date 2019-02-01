@@ -43,12 +43,12 @@ if ($phpVersion > 5.4) {
     }
 }
 
-class gCaptcha {
+class GellaiCaptcha {
 
     const DEF_IMAGE_TYPE = "png";
     const DEF_TXT_COLOR  = "646464";
     const DEF_BG_COLOR   = "F0F0F0";
-    const DEF_LINE_COLOR = "646464";
+    const DEF_LINE_COLOR = "949494";
     const DEF_LENGTH     = 6;
     const DEF_MODE       = "b64";
     
@@ -63,7 +63,7 @@ class gCaptcha {
     private $_randNumber;
     private $_imgInst;
     private $_mode;
-    private $_param;
+    private $_param = array();
 
     public function __set($name, $value) {
         echo "<p>Property setting is not allowed!</p>";
@@ -72,7 +72,7 @@ class gCaptcha {
     
     public function __construct() {
         unset($_SESSION['gCaptcha']);
-        
+
         $this->_setMode();
         
         if($this->_mode == "raw") {
@@ -87,17 +87,14 @@ class gCaptcha {
     }
     
     /**
-     * Get captcha image 
+     * Get captcha image / Base64 mode 
      * @return type
      */
-    public function getCaptcha($param = null) {
+    public function getCaptcha($param = array()) {
+		$this->_param = $param;
         $this->_setMode();
         
-        if($this->_mode == "b64") {
-            if($param) {
-                $this->_param = $param;
-            }
-            
+        if($this->_mode == "b64") {            
             $this->_setImgType()
                  ->_setRandNumber()   
                  ->_setTxtColor()
@@ -208,10 +205,23 @@ class gCaptcha {
         }
         
         $_SESSION['gCaptcha'] = $this->_randNumber;
-        
+
         return $this;
     }
     
+	/**
+	 *
+	 * Get parameters from $_GET
+	 */
+	private function _getParam() {
+		$this->_param['mode'] = isset($_GET['mode']) ? $_GET['mode'] : "";
+		$this->_param['length'] = isset($_GET['length']) ? $_GET['length'] : "";
+		$this->_param['type'] = isset($_GET['type']) ? $_GET['type'] : "";
+		$this->_param['tColor'] = isset($_GET['tColor']) ? $_GET['tColor'] : "";
+		$this->_param['bColor'] = isset($_GET['bColor']) ? $_GET['bColor'] : "";
+		$this->_param['lColor'] = isset($_GET['lColor']) ? $_GET['lColor'] : "";
+	} 
+	
     /**
      * Set mode
      */
@@ -443,7 +453,6 @@ class gCaptcha {
      
         imagedestroy($this->_imgInst);
     }
-
 }
 
-$gCaptcha = new GCaptcha();
+$gCaptcha = new GellaiCaptcha();
