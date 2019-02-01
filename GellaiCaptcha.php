@@ -16,65 +16,20 @@
  *      2. Base 64 mode
  * 
  *      <?php
- *          include 'classes/GellaiCaptcha.php';
- *          $param = array('length' => 8, 
- *                         'type'   => "gif", 
- *                         'tColor' => "d40"); 
- *          echo $gCaptcha->getCaptcha($param);
- *      ?>
- */
-
-
-/**
- * Get the first 3 digits of the current PHP Version
- */
-$phpVersion = substr(phpversion(), 0, 3);
-
-/**
- * Check PHP Version and check if the session is already started.
- */
-if ($phpVersion > 5.4) {
-    if (session_status() == PHP_SESSION_NONE) {
-        session_start();
-    }
-} else {
-    if (session_id() == '') {
-        session_start();
-    }
-}
-
-<?php
-/**
- * Parameters:
- *      mode=raw            // Mode (see usage below)
- *      length=6            // Length of random number
- *      type=png            // Rendering image type
- *      tColor=F0F0F0       // Text colour
- *      bColor=646464       // Background colour
- *      lColor=F0F0F0       // Line colour
- * 
- * Usage:
- *      1. Raw mode
- * 
- *      <img src=classes/GellaiCaptcha.php?mode=raw&length=10&type=jpeg />
- * 
- *      2. Base 64 mode
- * 
- *      <?php
  *          include_onec('classes/GellaiCaptcha.php');
  * 
  *          $param = array(
- *						'mode'	 => "b64",
- *						'length' => 5,
- *						'type'	 => "gif",
- *						'tColor' => "646464",
- *						'bColor' => "F0F0F0",
- *						'lColor' => "949494" );
- *		?>
+ *                      'mode'	 => "b64",
+ *                      'length' => 5,
+ *                      'type'	 => "gif",
+ *                      'tColor' => "646464",
+ *                      'bColor' => "F0F0F0",
+ *                      'lColor' => "949494" );
+ *      ?>
  *          
- *		<?php 
- *			echo $gCaptcha->getCaptcha($param); 
- *		?>
+ *      <?php 
+ *          echo $gCaptcha->getCaptcha($param); 
+ *      ?>
  *
  */
 
@@ -270,9 +225,9 @@ class GellaiCaptcha
         return $this;
     }
 
-	/**
-	 * Get parameters from $_GET
-	 */
+    /**
+     * Get parameters from $_GET
+     */
     private function _getParam() {
         $this->_param['mode'] = isset($_GET['mode']) ? $_GET['mode'] : "";
         $this->_param['length'] = isset($_GET['length']) ? $_GET['length'] : "";
@@ -329,7 +284,7 @@ class GellaiCaptcha
         
         return $this;
     }
-	
+    
     /**
      * Set line colour from 'lColor' parameter
      * @return $this
@@ -346,7 +301,7 @@ class GellaiCaptcha
         
         return $this;
     }
-
+    
     /**
      * Set image resource (width, height)
      * @return $this
@@ -356,7 +311,7 @@ class GellaiCaptcha
         $this->_imgInst = imagecreatetruecolor($this->_width, $this->_height);
         return $this;
     }
-
+    
     /**
      * Return colour resource code
      * @param string $hColor
@@ -364,10 +319,10 @@ class GellaiCaptcha
      */
     private function _getColor($hColor) {      
         $rgb = $this->_hex2rgb($hColor);
-
+        
         return imagecolorallocate($this->_imgInst, $rgb['r'], $rgb['g'], $rgb['b']);
     }
-
+    
     /**
      * Flood fill image resource with background colour
      * Add string with colour to the image resource
@@ -381,7 +336,7 @@ class GellaiCaptcha
         
         return $this;
     }
-
+    
     /**
      * Add diagonal lines to image resource
      * @return $this
