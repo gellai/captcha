@@ -2,9 +2,9 @@
 include_once('GellaiCaptcha.php'); 
 
 $param = array(
-            'mode'	 => "b64",
+            'mode'   => "b64",
             'length' => 5,
-            'type'	 => "gif",
+            'type'   => "gif",
             'tColor' => "646464",
             'bColor' => "F0F0F0",
             'lColor' => "949494" ); 
